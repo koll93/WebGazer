@@ -1,4 +1,13 @@
 import faceLandmarksDetection from '@tensorflow-models/face-landmarks-detection';
+import tf from '@tensorflow/tfjs-core';
+import tfwasm from '@tensorflow/tfjs-backend-wasm';
+import {version} from '@tensorflow/tfjs-backend-wasm/dist/version';
+
+tf.env().set('WASM_HAS_SIMD_SUPPORT', true)
+tf.env().set('WASM_HAS_MULTITHREAD_SUPPORT', false)
+
+
+tfwasm.setWasmPaths(`https://cdn.jsdelivr.net/npm/@tensorflow/tfjs-backend-wasm@${version}/dist/`);
 
 /**
  * Constructor of TFFaceMesh object
@@ -7,10 +16,19 @@ import faceLandmarksDetection from '@tensorflow-models/face-landmarks-detection'
 const TFFaceMesh = function() {
   //Backend options are webgl, wasm, and CPU.
   //For recent laptops WASM is better than WebGL.
-  this.model = faceLandmarksDetection.load(
-    faceLandmarksDetection.SupportedPackages.mediapipeFacemesh,
-    { maxFaces: 1 }
-  );
+  tf.setBackend('wasm').then(async (e) => {
+    console.log('setBackend', e);
+    console.log('getBackend', tf.getBackend());
+
+    this.model = faceLandmarksDetection.load(
+        faceLandmarksDetection.SupportedPackages.mediapipeFacemesh,
+        {
+          maxFaces: 1,
+          shouldLoadIrisModel: false
+        }
+    );
+  })
+
   this.predictionReady = false;
 };
 

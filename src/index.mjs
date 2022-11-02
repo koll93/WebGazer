@@ -1,4 +1,4 @@
-import '@tensorflow/tfjs';
+// import '@tensorflow/tfjs';
 //import(/* webpackPreload: true */ '@tensorflow/tfjs');
 //import(/* webpackChunkName: 'pageA' */ './vendors~main.js')
 
@@ -741,9 +741,9 @@ webgazer.stopVideo = function() {
 webgazer.detectCompatibility = function() {
 
   var getUserMedia = navigator.mediaDevices.getUserMedia ||
-    navigator.getUserMedia ||
-    navigator.webkitGetUserMedia ||
-    navigator.mozGetUserMedia;
+      navigator.getUserMedia ||
+      navigator.webkitGetUserMedia ||
+      navigator.mozGetUserMedia;
 
   return getUserMedia !== undefined;
 };
